@@ -25,15 +25,18 @@ class ProductsController {
     }
   }
 
+  // 🔹 5. Yangi mahsulot yaratish
   async createProduct(req, res) {
     try {
       let imageUrls = [];
 
       if (req.files && req.files.length > 0) {
-        // Har bir rasmni imgbb'ga yuklaymiz
         for (const file of req.files) {
-          const base64Image = file.buffer.toString("base64");
-          const uploaded = await imgbbUploader(imgbbApiKey, base64Image);
+          const options = {
+            apiKey: process.env.IMGBB_API_KEY,
+            base64string: file.buffer.toString("base64"), // bu to'g'ri
+          };
+          const uploaded = await imgbbUploader(options);
           imageUrls.push(uploaded.url);
         }
       }
@@ -44,7 +47,7 @@ class ProductsController {
       };
 
       const result = await Products.create(newProductData);
-      if (!res) {
+      if (!result) {
         return response.error(res, "Mahsulot yaratilmadi");
       }
       return response.created(res, "Mahsulot muvoffaqiyatli yaratildi", result);

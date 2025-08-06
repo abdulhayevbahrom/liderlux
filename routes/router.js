@@ -19,7 +19,7 @@ router.post(
   upload.array("images", 10),
   productController.createProduct
 );
-router.get("/product/get", productController.getProducts);
+router.get("/product/all", productController.getProducts);
 router.get("/product/get/:id", productController.getProductById);
 router.put(
   "/product/update/:id",
@@ -27,5 +27,13 @@ router.put(
   productController.updateProduct
 );
 router.delete("/product/delete/:id", productController.deleteProduct);
+
+const contactController = require("../controller/contactController");
+
+router.post("/contact/create", contactController.createContact);
+router.get("/contact/all", contactController.getContacts);
+router.get("/contact/get/:id", contactController.getContactById);
+router.put("/contact/update/:id", contactController.updateContact);
+router.delete("/contact/delete/:id", contactController.deleteContact);
 
 module.exports = router;

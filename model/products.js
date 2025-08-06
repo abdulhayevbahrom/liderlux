@@ -1,19 +1,31 @@
 const { Schema, model } = require("mongoose");
 
-const ProductSchema = new Schema({
-  title: {
-    type: String,
+const multiLangString = {
+  uz: { type: String, default: "" },
+  ru: { type: String, default: "" },
+  en: { type: String, default: "" },
+};
+
+const ProductSchema = new Schema(
+  {
+    title: multiLangString, // sarlavha 3 tilda
+    images: {
+      type: [String],
+      required: true,
+    },
+    price: {
+      type: Number,
+      default: 0,
+    },
+    applicationAreas: multiLangString, // qo‘llanish sohalari
+    usageMethod: multiLangString, // qo‘llash usuli
+    safetyRequirements: multiLangString, // xavfsizlik talablar
+    storageAndTransport: multiLangString, // saqlash va tashish
+    manufacturerWarranty: multiLangString, // kafolat
   },
-  description: {
-    type: String,
-  },
-  images: {
-    type: Array,
-    required: true,
-  },
-  price: {
-    type: Number,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = model("Product", ProductSchema);
