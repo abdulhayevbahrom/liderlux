@@ -6,7 +6,8 @@ const authMiddleware = async (req, res, next) => {
     let path = req.originalUrl;
 
     let openRoutes = ["/api/admin/login"];
-    if (openRoutes.includes(path)) return next();
+    if (openRoutes.includes(path) || path.includes("/api/product/all"))
+      return next();
 
     const token = req?.headers?.authorization?.split(" ")[1];
     if (!token) return response.error(res, "Token topilmadi");

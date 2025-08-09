@@ -28,29 +28,33 @@ class ProductsController {
   // 🔹 5. Yangi mahsulot yaratish
   async createProduct(req, res) {
     try {
-      let imageUrls = [];
-
-      if (req.files && req.files.length > 0) {
-        for (const file of req.files) {
-          const options = {
-            apiKey: process.env.IMGBB_API_KEY,
-            base64string: file.buffer.toString("base64"), // bu to'g'ri
-          };
-          const uploaded = await imgbbUploader(options);
-          imageUrls.push(uploaded.url);
-        }
+      // 1) Rasmlar majburiy (schema: images required: true)
+      if (!req.files || req.files.length === 0) {
+        return response.error(res, "Rasm talab qilinadi (kamida 1ta).");
       }
 
-      const newProductData = {
-        ...req.body,
-        ...(imageUrls.length > 0 && { images: imageUrls }),
-      };
+      // 2) imgbb ga yuklash
+      const imageUrls = [];
+      for (const file of req.files) {
+        const uploaded = await imgbbUploader({
+          apiKey: process.env.IMGBB_API_KEY,
+          base64string: file.buffer.toString("base64"),
+        });
+        if (!uploaded?.url) {
+          return response.error(res, "Rasm yuklashda xatolik.");
+        }
+        imageUrls.push(uploaded.url);
+      }
 
-      const result = await Products.create(newProductData);
+      let data = JSON.parse(JSON.stringify(req.body));
+      data.images = imageUrls;
+
+      // 5) Saqlash
+      const result = await Products.create(data);
       if (!result) {
         return response.error(res, "Mahsulot yaratilmadi");
       }
-      return response.created(res, "Mahsulot muvoffaqiyatli yaratildi", result);
+      return response.created(res, "Mahsulot muvaffaqiyatli yaratildi", result);
     } catch (error) {
       return response.serverError(res, error.message);
     }
