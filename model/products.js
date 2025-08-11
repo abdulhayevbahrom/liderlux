@@ -14,7 +14,7 @@ const ProductSchema = new Schema(
       required: true,
     },
     price: {
-      type: Number,
+      type: String,
       default: 0,
     },
     applicationAreas: multiLangString, // qo‘llanish sohalari
