@@ -21,11 +21,7 @@ router.post(
 );
 router.get("/product/all", productController.getProducts);
 router.get("/product/get/:id", productController.getProductById);
-router.put(
-  "/product/update/:id",
-  upload.array("images", 10),
-  productController.updateProduct
-);
+router.put("/product/update/:id", productController.updateProduct);
 router.delete("/product/delete/:id", productController.deleteProduct);
 
 const contactController = require("../controller/contactController");

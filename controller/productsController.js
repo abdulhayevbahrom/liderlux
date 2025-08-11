@@ -80,22 +80,8 @@ class ProductsController {
   async updateProduct(req, res) {
     try {
       const { id } = req.params;
-      let imageUrls = [];
 
-      if (req.files && req.files.length > 0) {
-        for (const file of req.files) {
-          const base64Image = file.buffer.toString("base64");
-          const uploaded = await imgbbUploader(imgbbApiKey, base64Image);
-          imageUrls.push(uploaded.url);
-        }
-      }
-
-      const updatedData = {
-        ...req.body,
-        ...(imageUrls.length > 0 && { images: imageUrls }),
-      };
-
-      const product = await Products.findByIdAndUpdate(id, updatedData, {
+      const product = await Products.findByIdAndUpdate(id, req.body, {
         new: true,
       });
 
