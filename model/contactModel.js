@@ -17,11 +17,11 @@ const ContactSchema = new Schema(
       type: String,
       required: true,
     },
-    // hrDepartment: {
-    //   // Отдел по работе с персоналом
-    //   type: String,
-    //   required: true,
-    // },
+    turkeyBranch: {
+      // Филиал в Турции
+      type: String,
+      required: true,
+    },
     // infoDesk: {
     //   // Справочное бюро
     //   type: String,
