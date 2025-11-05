@@ -18,7 +18,7 @@ const ContactSchema = new Schema(
       required: true,
     },
     turkeyBranch: {
-      // Филиал в Турции
+      // Офис в Турции, Стамбул
       type: String,
       required: true,
     },
